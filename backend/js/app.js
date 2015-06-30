@@ -5,10 +5,10 @@ var bodyParser = require('body-parser');
 
 var dataAccess = require('./data_access/dataAccess');
 dataAccess.establishConnection("mongodb://localhost/test", {
-    error: function() {
+    error: function () {
         console.error.bind(console, 'connection error:');
     },
-    success: function() {
+    success: function () {
         console.log('Connected');
     }
 });
@@ -20,32 +20,28 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.get('/posts', function(req, res){
+app.get('/posts', function (req, res) {
     var responseObj = {
-        data: {
-            field1: 1,
-            field2: 2,
-            field3: 3
-        },
-        id: 12345
+        requestBody: req.body,
+        requestHeaders: req.headers
     };
     res.status(200).send(responseObj);
 });
 
-app.post('/login', function(req, res){
+app.post('/login', function (req, res) {
     var usernameIn = req.body.username,
         passwordIn = req.body.password;
     dataAccess.login(usernameIn, passwordIn);
     res.status(200).send('Logged in: ' + usernameIn);
 });
 
-app.post('/logout', function(req, res){
+app.post('/logout', function (req, res) {
     var usernameIn = req.body.username;
     dataAccess.logout(usernameIn);
     res.status(200).send('Logged out: ' + usernameIn);
 });
 
-app.post('/register', function(req, res){
+app.post('/register', function (req, res) {
     var usernameIn = req.body.username;
     dataAccess.register({
         username: usernameIn,
@@ -55,7 +51,7 @@ app.post('/register', function(req, res){
     res.status(200).send('Registered: ' + usernameIn.toString());
 });
 
-app.post('/create-post', function(req, res){
+app.post('/create-post', function (req, res) {
     var post = {
         user: req.body.username,
         title: req.body.title,
@@ -66,27 +62,37 @@ app.post('/create-post', function(req, res){
     res.status(200).send(submittedPost);
 });
 
-app.post('/delete-post/:postId', function(req, res){
-
+app.post('/delete-post/:postId', function (req, res) {
+    var postId = req.body.postId;
+    console.log("Delete post: " + postId.toString());
 });
 
-app.post('/upvote/:postId', function(req, res){
-
+app.post('/upvote/:postId', function (req, res) {
+    var postId = req.body.postId;
+    console.log("Upvote post: " + postId.toString());
 });
 
-app.post('/downvote/:postId', function(req, res){
-
+app.post('/downvote/:postId', function (req, res) {
+    var postId = req.body.postId;
+    console.log("Downvote post: " + postId.toString());
 });
 
-app.post('/comment', function(req, res){
-
+app.post('/comment', function (req, res) {
+    var post = {
+        commentText: req.body.commentText,
+        username: req.body.username,
+        postId: req.body.postId,
+        parentCommentId: req.body.parentCommentId
+    };
+    console.log("Comment: " + JSON.stringify(post));
 });
 
-app.get('/user/:userId', function(req, res){
-
+app.get('/user/:userId', function (req, res) {
+    var userId = req.body.userId;
+    console.log("View user: " + userId);
 });
 
-app.get('/post/:postId', function(req, res){
+app.get('/post/:postId', function (req, res) {
     var post = dataAccess.getPost(req.params.postId);
     res.status(200).send(post);
 });

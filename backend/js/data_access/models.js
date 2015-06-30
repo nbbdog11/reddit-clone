@@ -1,4 +1,4 @@
-module.exports = function(mongoose) {
+module.exports = function (mongoose) {
     var Schema = mongoose.Schema,
         bcrypt = require('bcrypt'),
         SALT_WORK_FACTOR = 10;
@@ -21,7 +21,7 @@ module.exports = function(mongoose) {
         }
     });
 
-    UserSchema.pre('save', function(next) {
+    UserSchema.pre('save', function (next) {
         var user = this;
 
         // only hash the password if it has been modified (or is new)
@@ -30,7 +30,7 @@ module.exports = function(mongoose) {
         }
 
         // generate a salt
-        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
             if (err) {
                 return next(err);
             }
