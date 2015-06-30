@@ -2,10 +2,6 @@
   "name": "reddit-clone-backend",
   "version": "0.0.1",
   "description": "Backend RESTful Node.js implementation of a reddit clone.",
-  "scripts": {
-    "preinstall": "npm install js/data_access",
-    "preupdate": "npm install js/data_access"
-  },
   "dependencies": {
     "express": "~4.13.0",
     "cookies": "~0.5.0",
